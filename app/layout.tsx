@@ -1,4 +1,9 @@
 import SideBar from '@/components/SideBar';
+import { getServerSession } from 'next-auth';
+
+import Login from '@/components/Login';
+import SessionProvider from '@/components/SessionProvider';
+import { nextAuthOption } from '@/app/api/auth/[...nextauth]/route';
 
 export const metadata = {
   title: 'ChatGPT Messenger',
@@ -6,23 +11,31 @@ export const metadata = {
   viewport: 'width=device-width, initial-scale=1.0'
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const session = await getServerSession(nextAuthOption)
+
   return (
     <html lang="en">
       <body>
-        <div className={'flex'}>
-          <div className={'bg-[#202123] max-w-xs h-screen overflow-y-auto md:min-w-[20rem]'}>
-            <SideBar />
-          </div>
+      <SessionProvider session={session}>
+        {!session ? (
+            <Login />
+        ) : (
+            <div className={'flex'}>
+              <div className={'bg-[#202123] max-w-xs h-screen overflow-y-auto md:min-w-[20rem]'}>
+                <SideBar />
+              </div>
 
-          {/* Client Provider - Notification */}
+              {/* Client Provider - Notification */}
 
-          <div className={'bg-[#343541] flex-1'}>{children}</div>
-        </div>
+              <div className={'bg-[#343541] flex-1'}>{children}</div>
+            </div>
+        )}
+      </SessionProvider>
       </body>
     </html>
   )
