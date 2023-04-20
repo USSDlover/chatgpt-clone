@@ -14,11 +14,14 @@
     "@types/react": "18.0.37",
     "@types/react-dom": "18.0.11",
     "autoprefixer": "10.4.14",
+    "deepai": "^1.0.21",
     "eslint": "8.38.0",
     "eslint-config-next": "^13.3.0",
     "firebase": "^9.19.1",
+    "firebase-admin": "^11.7.0",
     "next": "13.3.1-canary.13",
     "next-auth": "^4.22.0",
+    "openai": "^3.2.1",
     "postcss": "8.4.22",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -26,5 +29,8 @@
     "react-hot-toast": "^2.4.0",
     "tailwindcss": "3.3.1",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@types/deepai": "^1.0.0"
   }
 }

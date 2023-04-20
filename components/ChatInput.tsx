@@ -16,7 +16,8 @@ function ChatInput({chatId}: Props) {
     const {data: session} = useSession();
 
     // useSWR to get model
-    const model = 'text-davinci-003';
+    const chatGPTModel = 'text-davinci-003';
+    const model = 'text2img';
 
     const sendMessage = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -50,10 +51,13 @@ function ChatInput({chatId}: Props) {
                 model,
                 session
             })
-        }).then(() => {
+        }).then((response) => {
+            console.log('Chat response', response);
             toast.success('ChatGPT has responded!', {
                 id: notification
             });
+        }).catch((error) => {
+            console.log('Error on API call', error);
         });
     };
 
