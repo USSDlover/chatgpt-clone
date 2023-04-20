@@ -16,13 +16,13 @@ export interface ModelInputs { text: '', image?: '', image2?: '', image1?: '' }
 const query = async (model: Models, body: ModelInputs): Promise<Response> => {
     const form = new FormData();
     form.append('text', body.text);
-
-    return await fetch(`https://api.deepai.org/api/${model}`, {
+    return fetch(`https://api.deepai.org/api/${model}`, {
         method: 'POST',
         headers: {
             'api-key': process.env.DEEPAI_API_KEY || 'quickstart-QUdJIGlzIGNvbWluZy4uLi4K'
         },
-        body: form
+        body: form,
+        keepalive: true
     }).catch((error) => {
         console.log('Error on API call', error);
         return Response.error();

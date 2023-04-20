@@ -40,7 +40,7 @@ function ChatInput({chatId}: Props) {
 
         const notification = toast.loading('ChatGPT is thinking...');
 
-        await fetch('/api/askQuestion', {
+        await fetch('/api/text2img', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -50,7 +50,8 @@ function ChatInput({chatId}: Props) {
                 chatId,
                 model,
                 session
-            })
+            }),
+            keepalive: true
         }).then((response) => {
             console.log('Chat response', response);
             toast.success('ChatGPT has responded!', {

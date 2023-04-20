@@ -3,12 +3,17 @@ import admin from 'firebase-admin';
 import { adminDb } from '@/firebaseAdmin';
 import { NextRequest, NextResponse } from 'next/server';
 
+type DeepAPIResponse = {
+    id: string;
+    output_url: string;
+}
+
 export async function POST(
     req: NextRequest
 ) {
     const { prompt, chatId, model, session } = await req.json();
 
-    console.log('Request prompt', prompt);
+    console.log('Request prompt for Text 2 IMG', prompt);
 
     if(!prompt) {
         NextResponse.json({ answer: 'Please provide a prompt!', status: 400 });
@@ -23,21 +28,26 @@ export async function POST(
     // Deep AI Query
     const response = await query(model, { text: prompt });
 
-    console.log('API Response :O', await response.json());
-
     if (response.status !== 200) {
-        NextResponse.json({ answer: response, status: response.status, fullRes: response });
-        return;
+        return NextResponse.json(
+            { answer: 'Call Failed', status: response.status, fullRes: JSON.stringify(response) },
+            { status: response.status }
+        );
     }
 
+    const deepAiResponse: DeepAPIResponse = await response.json();
+
     const message: Message = {
-        text: `ChatGPT was unable to find an answer for chat`,
-        deepAi: await response.json() || 'failed deep ai',
+        text: `DeepAI has generated this image`,
+        deepAi:{
+            id: deepAiResponse.id || '',
+            outputUrl: deepAiResponse.output_url || ''
+        },
         createdAt: admin.firestore.Timestamp.now(),
         user: {
             _id: 'Deep AI',
             name: 'Deep AI',
-            avatar: 'https://brandlogovector.com/wp-content/uploads/2023/01/ChatGPT-Icon-Logo-PNG.png',
+            avatar: 'https://avatars.githubusercontent.com/u/29112101?v=4',
         },
     };
 
@@ -50,5 +60,5 @@ export async function POST(
         .collection('messages')
         .add(message);
 
-    NextResponse.json({ answer: message.text });
+    return NextResponse.json({ message });
 }
