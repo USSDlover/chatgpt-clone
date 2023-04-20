@@ -1,5 +1,3 @@
-import deepAi from './deepai';
-
 export type Models = 'colorizer'
     | 'text2img'
     | 'text-generator'
@@ -15,35 +13,20 @@ export type Models = 'colorizer'
 
 export interface ModelInputs { text: '', image?: '', image2?: '', image1?: '' }
 
-export interface ModelOutputs {
-    'torch-srgan': {id: string, output_url: string};
-    [key: string]: any;
-}
+const query = async (model: Models, body: ModelInputs): Promise<Response> => {
+    const form = new FormData();
+    form.append('text', body.text);
 
-
-const query = async (model: Models, body: ModelInputs): Promise<any> => {
-    console.log('Request body', body);
-
-    const res = await deepAi.callStandardApi('text2img', { text: 'something' })
-        .catch((e: any) => {
-            console.log(`Got error on call standard API`);
-            console.log(e);
-            console.log(`END OF ERROR`);
-        });
-
-    /*const res = await fetch('https://api.deepai.org/api/text2img', {
+    return await fetch(`https://api.deepai.org/api/${model}`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'api-key': '256400a4-fb65-4a31-af94-3c57c52da608',
-            'client-library': 'deepai-js-client'
+            'api-key': process.env.DEEPAI_API_KEY || 'quickstart-QUdJIGlzIGNvbWluZy4uLi4K'
         },
-        body: JSON.stringify(body)
+        body: form
     }).catch((error) => {
         console.log('Error on API call', error);
-    });*/
-
-    return res || '';
+        return Response.error();
+    });
 }
 
 export default query;
