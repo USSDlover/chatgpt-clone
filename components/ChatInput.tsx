@@ -21,8 +21,6 @@ function ChatInput({chatId}: Props) {
         fallbackData: 'text-davinci-003'
     });
 
-    const DeepAIModel = 'text2img';
-
     const sendMessage = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!prompt) return;
@@ -44,7 +42,7 @@ function ChatInput({chatId}: Props) {
 
         const notification = toast.loading('ChatGPT is thinking...');
 
-        await fetch('/api/text2img', {
+        await fetch('/api/askQuestion', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -56,8 +54,7 @@ function ChatInput({chatId}: Props) {
                 session
             }),
             keepalive: true
-        }).then((response) => {
-            console.log('Chat response', response);
+        }).then(() => {
             toast.success('ChatGPT has responded!', {
                 id: notification
             });

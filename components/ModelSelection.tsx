@@ -14,7 +14,7 @@ function ModelSelection() {
     return (
         <div className={'mt-2'}>
             <Select
-                className={'mt-2'}
+                className={'mt-2 bg-[#434654] border-[#434654]'}
                 options={models?.modelOptions}
                 defaultValue={model}
                 placeholder={model}
@@ -22,7 +22,7 @@ function ModelSelection() {
                 isLoading={isLoading}
                 menuPosition={'fixed'}
                 classNames={{
-                    control: (state) => 'bg-[#434654] border-[#434654]'
+                    control: () => ('bg-[#434654] border-[#434654]')
                 }}
                 onChange={(e) => setModel(e.value)}
             />

@@ -23,7 +23,6 @@ export async function POST(
 
     const message: Message = {
         text: response || `ChatGPT was unable to find an answer for chat`,
-        deepAi: response,
         createdAt: admin.firestore.Timestamp.now(),
         user: {
             _id: 'ChatGPT',
@@ -41,5 +40,5 @@ export async function POST(
         .collection('messages')
         .add(message);
 
-    NextResponse.json({ answer: message.text, status: 200 });
+    return NextResponse.json({ answer: message.text, status: 200 });
 }
