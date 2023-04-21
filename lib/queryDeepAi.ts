@@ -19,7 +19,7 @@ const query = async (model: Models, body: ModelInputs): Promise<Response> => {
     return fetch(`https://api.deepai.org/api/${model}`, {
         method: 'POST',
         headers: {
-            'api-key': process.env.DEEPAI_API_KEY || 'quickstart-QUdJIGlzIGNvbWluZy4uLi4K'
+            'api-key': process.env.DEEPAI_API_KEY || ''
         },
         body: form,
         keepalive: true

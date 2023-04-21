@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is ChatGPT Cloned application
 
 ## Getting Started
 
@@ -22,14 +22,49 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## Required Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+This app is using 3rd parties to do the Authentication and Database and also Open AI platform.
+ Those tools require some variables which will injected into app using `.env` file or `.env.local` for local
+ development
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Authentication
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+The app is using [Next Auth](https://next-auth.js.org/getting-started/example) solution as authentication provider.
+
+- That requires some keys from Google firebase
+`Console Firebase -> Authentication -> if not started yet click on Get Started -> select Google -> Enable it -> Click on Edit`
+Under Web SDK Configuration copy the Client ID and Secret Key and go ahead and place them in `.env` file or add it to server environment variables
+
+- Next Auth URL is address to API which is local host for NextJS
+
+- Make sure to update redirects and white-list the localhost or the deployed domain address.
+ Go to Google Cloud platform and the configurations should be available under `APIs & Services -> Credentials`
+  - For redirect URL try to sign in on your app and open more detail on error and copy the redirect URL from error message in your app
+    and paste it into Google Cloud
+
+- Then you'll need to go to Google Cloud platform and retrieve the project ID and Secret which is available
+under `APIs & Services / Credentials` and put the at .env for server variables
+
+### Database
+
+For database, we are using FireBase here, which can be replaced with any other database you like.
+
+To use firebase you will need to import the firebase configuration into .env file or directly add it into `firebase.ts` file.
+
+If you plan to use it as an environment variable, make sure to remove [line break remover](https://www.textfixer.com/tools/remove-line-breaks.php) first.
+
+#### Admin Access
+
+As we need to do some stuff at server side, we need Admin Access, for that we need `Firebase Service Account Key`
+ which is available under `Firebase Console -> Head over to Project Settings -> Service Accounts`
+
+When the key generated, download a file and copy the content into [line break remover](https://www.textfixer.com/tools/remove-line-breaks.php)
+ then copy and paste the result inside env variables (FIREBASE_SERVICE_ACCOUNT_KEY)
+
+### OpenAI API Key
+
+Sign up at [Platform OpenAI](https://platform.openai.com/) and generate the API Key and add it to .env variables
 
 ## Deploy on Vercel
 
