@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth';
 
 import Login from '@/components/Login';
 import SessionProvider from '@/components/SessionProvider';
-import { nextAuthOption } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import ClientProvider from '@/components/ClientProvider';
 
 export const metadata = {
@@ -17,7 +17,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerSession(nextAuthOption)
+  const session = await getServerSession(authOptions)
 
   return (
     <html lang="en">
