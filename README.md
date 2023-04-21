@@ -66,6 +66,26 @@ When the key generated, download a file and copy the content into [line break re
 
 Sign up at [Platform OpenAI](https://platform.openai.com/) and generate the API Key and add it to .env variables
 
+
+#### Env Variations
+
+```shell
+GOOGLE_OAUTH2_ID=YOUR_APP_ID
+GOOGLE_OAUTH2_SECRET=YOUR_APP_SECRET
+
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=VERY_GOOD_SECRET
+
+OPENAI_API_KEY=YOUR_OPENAI_API_KEY
+
+# Convert myServiceAccountKey value using https://www.textfixer.com/tools/remove-line-breaks.php
+# Then paste it here
+FIREBASE_SERVICE_ACCOUNT_KEY=YOUR_SERVICE_KEY
+FIREBASE_CONFIG=YOUR_APP_CONFIG
+
+DEEPAI_API_KEY=YOUR_APP_API_KEY
+```
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
