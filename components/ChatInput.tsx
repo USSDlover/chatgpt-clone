@@ -6,6 +6,8 @@ import { useSession } from 'next-auth/react';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/firebase';
 import toast from 'react-hot-toast';
+import ModelSelection from '@/components/ModelSelection';
+import useSWR from 'swr';
 
 type Props = {
     chatId: string;
@@ -15,9 +17,11 @@ function ChatInput({chatId}: Props) {
     const [prompt, setPrompt] = useState('');
     const {data: session} = useSession();
 
-    // useSWR to get model
-    const chatGPTModel = 'text-davinci-003';
-    const model = 'text2img';
+    const { data: model } = useSWR('model', {
+        fallbackData: 'text-davinci-003'
+    });
+
+    const DeepAIModel = 'text2img';
 
     const sendMessage = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -83,8 +87,8 @@ function ChatInput({chatId}: Props) {
                 </button>
             </form>
 
-            <div>
-                {/*  Model selection  */}
+            <div className={'md:hidden'}>
+                <ModelSelection />
             </div>
         </div>
     );
