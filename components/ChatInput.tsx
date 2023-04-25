@@ -1,7 +1,7 @@
 'use client';
 
 import { PaperAirplaneIcon } from '@heroicons/react/20/solid';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/firebase';
@@ -16,6 +16,7 @@ type Props = {
 function ChatInput({chatId}: Props) {
     const [prompt, setPrompt] = useState('');
     const {data: session} = useSession();
+    const txtAreaRef = useRef<HTMLTextAreaElement>(null);
 
     const { data: model } = useSWR('model', {
         fallbackData: 'text-davinci-003'
@@ -63,15 +64,25 @@ function ChatInput({chatId}: Props) {
         });
     };
 
+    const autoGrow = () => {
+        if (txtAreaRef.current) {
+            txtAreaRef.current.style.height = '5px';
+            txtAreaRef.current.style.height = txtAreaRef.current.scrollHeight + 'px';
+        }
+    }
+
     return (
-        <div className={'bg-gray-700/50 text-gray-400 rounded-lg text-sm'}>
-            <form onSubmit={e => sendMessage(e)} className={'p-5 space-x-5 flex justify-between'}>
-                <input
-                    className={'bg-transparent focus:outline-none disabled:cursor-not-allowed disabled:text-gray-300'}
+        <div className={'h-fit bg-gray-700/50 text-gray-400 rounded-lg text-sm'}>
+            <form onSubmit={e => sendMessage(e)} className={'h-fit p-5 space-x-5 flex justify-between'}>
+                <textarea
+                    ref={txtAreaRef}
+                    className={'w-full h-auto h-fit bg-transparent focus:outline-none disabled:cursor-not-allowed disabled:text-gray-300'}
                     value={prompt}
                     disabled={!session}
-                    onChange={(e) => setPrompt(e.target.value)}
-                    type="text"
+                    onChange={(e) => {
+                        setPrompt(e.target.value);
+                        autoGrow();
+                    }}
                     placeholder={'Type your message here...'}
                 />
 
