@@ -1,7 +1,7 @@
 'use client';
 
 import { PaperAirplaneIcon } from '@heroicons/react/20/solid';
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/firebase';
@@ -22,8 +22,10 @@ function ChatInput({chatId}: Props) {
         fallbackData: 'text-davinci-003'
     });
 
-    const sendMessage = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const sendMessage = async (e?: FormEvent<HTMLFormElement>) => {
+        if (e)
+            e.preventDefault();
+
         if (!prompt) return;
 
         const input = prompt.trim();
@@ -70,6 +72,18 @@ function ChatInput({chatId}: Props) {
             txtAreaRef.current.style.height = txtAreaRef.current.scrollHeight + 'px';
         }
     }
+
+    useEffect(() => {
+        const keyDownHandler = async (event: KeyboardEvent) => {
+            if (event.ctrlKey && (event.code === 'Enter' || event.code === 'NumpadEnter')) {
+                await sendMessage();
+            }
+        }
+        document.addEventListener('keydown', keyDownHandler);
+        return () => {
+            document.removeEventListener('keydown', keyDownHandler);
+        }
+    }, [prompt]);
 
     return (
         <div className={'h-fit bg-gray-700/50 text-gray-400 rounded-lg text-sm'}>
