@@ -30,8 +30,8 @@ function Chat({ chatId }: Props) {
                     <ArrowDownCircleIcon className={'h-10 w-10 mx-auto mt-5 text-white animate-bounce'} />
                 </>
             )}
-            { messages?.docs && messages.docs.map((message) => (
-                <Message key={message.id} message={message.data()} />
+            { messages?.docs && messages.docs.map((message, index) => (
+                <Message scrollToTop={messages.docs.length === (index + 1)} key={message.id} message={message.data()} />
             )) }
             <></>
         </div>
